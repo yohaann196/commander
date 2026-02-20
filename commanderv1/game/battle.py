@@ -22,7 +22,6 @@ def battle(player, enemy):
     if player.is_alive():
         print(f"\n{player.name} defeated {enemy.name}!")
         gained = random.randint(5, 15)
-        player.exp += gained
-        print(f"You gained {gained} EXP! Total EXP: {player.exp}")
+        player.gain_exp(gained)
     else:
         print(f"\n{player.name} was defeated by {enemy.name}... Game Over.")
