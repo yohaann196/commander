@@ -25,6 +25,8 @@ def main():
         cont = input("> ").lower()
         if cont != "y":
             print(f"Good job, Commander {player.name}! You finished with {player.hp}/{player.max_hp} HP and {player.exp} EXP.")
+            print("Final inventory:")
+            player.inventory.show()
             break
 
 if __name__ == "__main__":
