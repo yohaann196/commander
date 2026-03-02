@@ -1,4 +1,5 @@
 import random
+from game.inventory import Inventory, BASE_WEAPON_DAMAGE
 
 EXP_PER_LEVEL = 20
 
@@ -10,8 +11,8 @@ class Player:
         self.level = 1
         self.exp = 0
         self.exp_to_next = EXP_PER_LEVEL
-        self.inventory = {"Potion": 2}
-        self.weapon = {"name": "Fist", "damage": 5}
+        self.inventory = Inventory({"Potion": 2})
+        self.weapon = {"name": "Fist", "damage": BASE_WEAPON_DAMAGE}
 
     def attack(self, enemy):
         damage = self.weapon["damage"] + random.randint(-2, 2)
@@ -19,13 +20,12 @@ class Player:
         enemy.take_damage(damage)
 
     def heal(self):
-        if self.inventory.get("Potion", 0) > 0:
-            heal_amount = random.randint(15, 25)
-            self.hp = min(self.max_hp, self.hp + heal_amount)
-            self.inventory["Potion"] -= 1
-            print(f"{self.name} uses a Potion and heals {heal_amount} HP! ({self.hp}/{self.max_hp})")
-        else:
-            print("No potions left!")
+        """Quick-use the first available potion from inventory."""
+        for potion in ("Super Potion", "Potion"):
+            if self.inventory.has(potion):
+                self.inventory.use_item(potion, self)
+                return
+        print("No potions left!")
 
     def take_damage(self, damage):
         self.hp -= damage

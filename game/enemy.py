@@ -1,5 +1,12 @@
 import random
 
+# (item_name, drop_chance 0-1)
+LOOT_TABLES = {
+    "Goblin":     [("Potion", 0.4)],
+    "Orc":        [("Potion", 0.3), ("Iron Sword", 0.2)],
+    "Dark Knight": [("Super Potion", 0.4), ("Steel Sword", 0.25)],
+}
+
 class Enemy:
     def __init__(self, name, hp, damage):
         self.name = name
@@ -20,3 +27,10 @@ class Enemy:
 
     def is_alive(self):
         return self.hp > 0
+
+    def drop_loot(self, player):
+        """Roll loot drops and add them to the player's inventory."""
+        table = LOOT_TABLES.get(self.name, [])
+        for item_name, chance in table:
+            if random.random() < chance:
+                player.inventory.add(item_name)
